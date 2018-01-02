@@ -17,7 +17,7 @@ step3: install mysql-server
 	root$:sudo apt-get install mysql-server
 
 step4: setup mysql
-	root$:mysql -u root
+	root$:mysql -u root -p （if before set password，need add “-p”）
 	
 	#cherk mysql system detail
 	mysql> status;
