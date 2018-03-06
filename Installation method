@@ -71,3 +71,5 @@ step8:edit apache2 default file,change domain to root connect
 	set 3:shell:nano /etc/apache2/sites-available/000-default.conf
 	
 	set 4:find #ServerName ,del #, set you domain and save and exit
+	
+	set 5:shell:service apache2 restart ;check you website
