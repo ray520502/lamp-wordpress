@@ -61,3 +61,9 @@ step7:install wordpress
 	set 3: click --->run install
 
 	set 4:add you information needed
+
+step8:edit apache2 default file,change domain to root connect
+
+	set 1:nano /etc/apache2/sites-enabled/000-default
+	
+	set 2:find DocumentRoot /www/html/ ,change ---->DocumentRoot /www/html/wordpress/
