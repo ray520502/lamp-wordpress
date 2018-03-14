@@ -11,12 +11,22 @@ step2: install php and plus
 	root$:sudo apt-get update
 
 	step2-2: install php7.0 and plus
-	root$: sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json
+	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json
 
 step3: install mysql-server
 	root$:sudo apt-get install mysql-server
+	root$:sudo apt-get install mysql-client
+	
+step4: install PhpmyAdmin  //install Selected
+	step4-1:install
+	root$:sudo apt-get install phpmyadmin
+	root$:sudo apt-get install php7.0-mbstring   //you need check you php version     $:php --version
+	root$:sudo apt-get install php-gettext
 
-step4: setup mysql
+	step4-2:build a soft link
+	root$:sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+
+step5: setup mysql
 	root$:mysql -u root -p （if before set password，need add “-p”）
 	
 	#cherk mysql system detail
@@ -34,7 +44,7 @@ step4: setup mysql
 	
 	mysql>exit
 
-step5: download wordpress tar
+step6: download wordpress tar
 
 	root$:cd /var/www/html/
 
@@ -48,10 +58,10 @@ step5: download wordpress tar
 	#setup wordpress body and group
 	root$:sudo chown www-data.www-data -R wordpress/
 
-step6: check you ip link and restar apache( you-server-ip/wordpress)
+step7: check you ip link and restar apache( you-server-ip/wordpress)
 	root$:sudo service apache2 restart
 
-step7:install wordpress
+step8:install wordpress
 
 	set 1:choose you language and continue
 	
@@ -62,7 +72,7 @@ step7:install wordpress
 
 	set 4:add you information needed
 
-step8:edit apache2 default file,change domain to root connect
+step9:edit apache2 default file,change domain to root connect
 
 	set 1:shell:nano /etc/apache2/sites-enabled/000-default
 	
