@@ -25,6 +25,15 @@ step4: install PhpmyAdmin  //install Selected
 
 	step4-2:build a soft link
 	root$:sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+	
+	step4-3:Change two options in php.ini
+	root$:sudo nano /etc/php/7.0/apache2/php.ini     
+	
+	display_errors = On(显示错误日志，出现两次，都要改，不然无效)
+	extension=php_mbstring.dll (开启mbstring)
+	
+	step4-4:restart apache2
+	root$:service apache2 restart
 
 step5: setup mysql
 	root$:mysql -u root -p （if before set password，need add “-p”）
