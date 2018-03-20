@@ -1,8 +1,7 @@
 1. 如何从错误页面中隐藏Apache版本和操作系统标识
-==============================================================================================================================
+
 说明：当您使用源代码或类似yum的任何其他软件包安装程序安装Apache，它会在错误页面显示您的服务器的操作系统名称和Apache Web服务器的版本。
 它还显示有关服务器中安装的Apache模块的信息。
-==============================================================================================================================
 
 01：编辑apache2.conf 配置文件
 # sudo nano /etc/apache2/apache2.conf (Debian/Ubuntu)
@@ -16,8 +15,9 @@ ServerTokens Prod
 *浏览器输入 http://你的域名地址/test 查看404错误是否还出现apache版本等敏感信息（test为随便乱填）
 
 
-2. 禁用目录列表
 ==============================================================================================================================
+2. 禁用目录列表
+
 说明：由默认的Apache列出在没有索引文件的文档根目录的所有内容 。
 例：
 .
@@ -34,7 +34,6 @@ ServerTokens Prod
     ├── test01.wordpress.2018-03-15.xml
     ├── wordfence-waf.php
     ├── wordpress.sql
-==============================================================================================================================
     
 我们可以通过使用Options指令中的配置文件的特定目录关闭目录列表。 为此，我们需要做在httpd.conf或apache2.conf文件中的条目。
 
@@ -44,11 +43,108 @@ ServerTokens Prod
   Options -Indexes              //增加此条规则
 </Directory>
 
+
+==============================================================================================================================
 3. 定期更新Apache
 
 说明：
 Apache的开发者社区将继续努力在安全问题和新的安全选项释放它的更新版本。所以它总是建议使用最新版本的Apache作为Web服务器。
-要检查Apache的版本 ：你可以用 httpd -v 命令查看当前版本。
+要检查Apache的版本 ：你可以用 httpd -v或 apache2 -v 命令查看当前版本。
+例如：
+# httpd -v
+    Server version: Apache/2.2.15 (Unix)
+    Server built:   Aug 13 2013 17:29:28
+
+# apt-get install apache2   //升级apache
+
+==============================================================================================================================
+
+4. 禁用不必要的模块
+这是一件好事，不给任何网络攻击的受害者的机会。 因此我们建议禁用所有那些不使用目前的模块 。您可以使用以下命令列出Web服务器的所有已编译模块。
+# apachectl -M
+
+Loaded Modules:
+ core_module (static)
+ so_module (static)
+ watchdog_module (static)
+ http_module (static)
+ log_config_module (static)
+ logio_module (static)
+ version_module (static)
+ unixd_module (static)
+ access_compat_module (shared)
+ alias_module (shared)
+ auth_basic_module (shared)
+ authn_core_module (shared)
+ authn_file_module (shared)
+ authz_core_module (shared)
+ authz_host_module (shared)
+ authz_user_module (shared)
+ autoindex_module (shared)
+ deflate_module (shared)
+ dir_module (shared)
+ env_module (shared)
+ filter_module (shared)
+ mime_module (shared)
+ mpm_prefork_module (shared)
+ negotiation_module (shared)
+ php7_module (shared)
+ setenvif_module (shared)
+ status_module (shared)
+
+*完全不知道那个有用那个没用，都是默认加载的。
+
+==============================================================================================================================
+
+5. 以单独的用户和组运行Apache
+
+*按照自己的wordpress安装流程，已经是新增apache用户未www-data，已经是安全没问题的。
+
+默认安装Apache运行，它与用户nobody或守护进程。 为了安全起见，建议在其自己的非特权帐户运行Apache。 例如：http-web 。
+创建Apache用户和组
+# groupadd http-web
+# useradd -d /var/www/ -g http-web -s /bin/nologin http-web 
+
+现在，你需要告诉Apache这个新的用户运行，为此，我们需要在/etc/httpd/conf/httpd.conf中的条目，然后重新启动该服务。
+用vim编辑器中打开/etc/httpd/conf/httpd.conf中 ，并搜索关键字“User”和“Group”，并在那里你会需要指定的用户名和组名使用。
+
+User http-web
+Group http-web
+
+修改后如下：   //按照自己的wordpress安装流程，已经是新增apache用户未www-data，已经是安全没问题的。
+COMMAND  PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+apache2 8883     root    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
+apache2 8886 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
+apache2 8887 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
+apache2 8888 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
+apache2 8889 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
+apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
+
+==============================================================================================================================
+6. 使用“允许”和“拒绝”限制对目录的访问
+
+我们可以限制使用“ 允许 ”和“ 拒绝 ”在httpd.conf文件选项进入目录。 在这里，在这个例子中，我们将通过设置在httpd.conf文件
+下面进行保护的根目录 。
+
+<Directory />
+    Options None
+    Order deny,allow
+    Deny from all    //这项注意，加了以后所有目录和文件均不可访问，网页无法打开。
+</Directory>
+
+————————————————————————————————————————————————————————————————————————————————————————————————————————————
+|Options “None” -这个选项将不允许用户启用任何可选功能。                                                         |
+|Order deny, allow -这是其中的“ 拒绝 ”和“ 允许 ”指令将被处理的顺序。 在这里，它会“ 拒绝 ”第一，“ 允许 ”下一个。    |
+|Deny from all -这将拒绝来自大家的根目录要求，任何人都无法访问根目录。                                           |
+————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+==============================================================================================================================
+
+7. 使用mod_security和mod_evasive模块来保护Apache
+
+
+
+
 
 
 
