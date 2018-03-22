@@ -122,9 +122,8 @@ apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
 
 ==============================================================================================================================
 6. 使用“允许”和“拒绝”限制对目录的访问
-
-我们可以限制使用“ 允许 ”和“ 拒绝 ”在httpd.conf文件选项进入目录。 在这里，在这个例子中，我们将通过设置在httpd.conf文件
-下面进行保护的根目录 。
+我们可以限制使用“ 允许 ”和“ 拒绝 ”在/etc/apache2/apache2.conf文件选项进入目录。 在这里，在这个例子中，
+我们将通过设置在/etc/apache2/apache2.conf文件下面进行保护的根目录 。
 
 <Directory />
     Options None
@@ -142,7 +141,7 @@ apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
 
 7. 使用mod_security和mod_evasive模块来保护Apache
 
-
+查询加载模块命令 #:apachectl -t -D DUMP_MODULES
 
 
 
