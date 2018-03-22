@@ -143,6 +143,8 @@ apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
 
 查询加载模块命令 #:apachectl -t -D DUMP_MODULES
 
+mod_security 设置路径为 /etc/modsecurity  
+复制modsecurity.conf-recommended  --------->变为 modsecurity.conf
 
 
 
