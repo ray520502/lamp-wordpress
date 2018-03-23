@@ -143,11 +143,30 @@ apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
 
 查询加载模块命令 #:apachectl -t -D DUMP_MODULES
 
+安装mod_security/mod_evasive
+#sudo apt-get install libapache2-mod-security2 libapache2-modsecurity libapache2-mod-evasive
+
 mod_security 设置路径为 /etc/modsecurity  
 复制modsecurity.conf-recommended  --------->变为 modsecurity.conf
 
+--------------------mod_evasive设置参考-----------------------
+
+<IfModule dosevasive22_module>  
+ DOSHashTableSize 3097  #记录黑名单的尺寸   
+ DOSPageCount 6         #每个页面被判断为dos攻击的读取次数  一旦超过，用户ip将被列入黑名单  
+ DOSSiteCount 100   #每个站点被判断为dos攻击的读取部件(object)的个数  一旦超过，用户ip将被列入黑名单  
+ DOSPageInterval 1  #读取页面间隔秒  同一页面的规定间隔时间  
+ DOSSiteInterval 1  #读取站点间隔秒   
+ DOSBlockingPeriod 200  #被封时间间隔秒  规定列入黑名单内ip的禁止时限，在时限内，用户继续访问将收到403 (Forbidden)的错误提示，
+                        #并且计时器将重置。  
 
 
+
+
+
+
+
+8.重定向404页面
 
 
 
