@@ -143,11 +143,78 @@ apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
 
 查询加载模块命令 #:apachectl -t -D DUMP_MODULES
 
-安装mod_security/mod_evasive
-#sudo apt-get install libapache2-mod-security2 libapache2-modsecurity libapache2-mod-evasive
+第一步：
+安装mod_security/mod_evasive，以及其他以来包
+#：sudo apt-get install -y libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev libapache2-modsecurity libapache2-mod-evasive
 
-mod_security 设置路径为 /etc/modsecurity  
-复制modsecurity.conf-recommended  --------->变为 modsecurity.conf
+==============================================================================
+Default locations:
+
+    Apache Webroot: /var/www/html/
+    Apache Config: 1/etc/apache2/
+    Apache Log folder: /var/log/apache2/
+    PHP config: /etc/php5/
+    php.ini location for PHP Apps served by Apache: /etc/php5/apache2/php.ini
+===============================================================================
+
+检查是否安装成功并激活：
+    #：apache2ctl -M | grep -i security
+    成功激活后如下显示security2_module (shared)
+
+
+
+第二步：配置modsecurity
+    #：cp /usr/share/modsecurity-crs/modsecurity_crs_10_setup.conf.example /usr/share/modsecurity-crs/modsecurity_crs_10_setup.conf
+
+第三步：使用modsecurity核心规则集 
+    转到/usr/share/modsecurity-crs文件夹，把modsecurity_crs_10_setup.conf文件软连接到activated_rules文件夹。
+    #：cd /usr/share/modsecurity-crs
+    #：sudo ln -s ../modsecurity_crs_10_setup.conf activated_rules/modsecurity_crs_10_setup.conf
+
+    把base_rules文件夹里的所有归侧文件软连接到activated_rules文件夹激活规则
+    #：for f in `ls base_rules`; do sudo ln -s ../base_rules/$f activated_rules/$f; done
+
+    #：ll activated_rules   //查看是否所有归侧都软连接到activated_rules文件夹里面。
+    
+第四步：修改配置文件
+    转到文件夹/etc/modsecurity
+    #:cd /etc/modsecurity
+    #:cp modsecurity.conf-recommended modsecurity.conf
+    把SecRuleEngine DetectionOnly -------->  SecRuleEngine On 保存离开
+    
+第五步：修改apache2/mods-available/security2.conf配置文件
+    #:nano /etc/apache2/mods-available/security2.conf
+    
+    如下修改：
+    <IfModule security2_module>
+        # Default Debian dir for modsecurity's persistent data
+        SecDataDir /var/cache/modsecurity
+
+        # Include all the *.conf files in /etc/modsecurity.
+        # Keeping your local configuration in that directory
+        # will allow for an easy upgrade of THIS file and
+        # make your life easier
+        IncludeOptional /etc/modsecurity/*.conf                                    //重点是整两行的配置和规则文件夹位置
+        IncludeOptional /usr/share/modsecurity-crs/activated_rules/*.conf          //重点
+    </IfModule>
+
+第六步：重启apache
+    #：sudo service apache2 reload
+    
+    
+第七步：测试
+    #：curl 'http://localhost/?q="><script>alert(1)</script>'  //XSS攻击测试，正常结果是403
+    #：curl "http://localhost/?q='1 OR 1=1"                    //sqli注入测试，正常是403或400 bad request
+
+===================================================================
+如果需要用github版本的规则配置文件则参照以下在第三步开始替换原来的配置方式执行：
+    $ sudo rm -rf /usr/share/modsecurity-crs
+    $ sudo apt-get install -y git
+    $ sudo git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git /usr/share/modsecurity-crs
+    
+    
+   
+
 
 --------------------mod_evasive设置参考-----------------------
 
