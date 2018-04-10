@@ -1,0 +1,16 @@
+准备
+
+1.更新服务器
+#:apt-get update
+#:apt-get upgrade -y
+
+2.尽量不要用root用户登录
+#:adduser example_user    //example_user你的新用户名
+#:adduser example_user sudo    //example_user你的新用户名，增加sudo权限
+
+3.使用SSH迷药认证登录
+
+利用ssh登录到Linux服务器有很多种方案，比较常用的就是用户名密码登录和SSH密钥认证的方式。
+相对用户名密码登陆方式，后者是一种更安全的方案，因为前者容易受到暴力破解的威胁，而后者用暴力破解的方法不太实际。
+首先需要在客户端产生公约密钥对。Linux下是如下命令：
+#:ssh-keygen -t rsa
