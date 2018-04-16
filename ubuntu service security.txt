@@ -9,8 +9,80 @@
 #:adduser example_user sudo    //example_user你的新用户名，增加sudo权限
 
 3.使用SSH迷药认证登录
+详细参考lamp-wordpress库内的笔记内容
+ssh no password connect ubuntu security
 
-利用ssh登录到Linux服务器有很多种方案，比较常用的就是用户名密码登录和SSH密钥认证的方式。
-相对用户名密码登陆方式，后者是一种更安全的方案，因为前者容易受到暴力破解的威胁，而后者用暴力破解的方法不太实际。
-首先需要在客户端产生公约密钥对。Linux下是如下命令：
-#:ssh-keygen -t rsa
+4.设置防火墙
+Ubuntu 上 ufw 是默认安装的，在 Debian 上只需要执行一下 sudo apt-get install ufw 。
+
+默认情况下 ufw 应该拒绝一切入站连接、允许全部出站连接，但是这行不通（那样的话你怎么连进来呢？）。
+我们来一步步地显式允许我们视为OK的连接。首先我们需要保证支持 IPV6 ，只需打开配置文件：
+
+#:sudo nano /etc/default/ufw
+允许IPV6=yes  //默认为同意
+
+其它要打开的端口我们用 ufw 工具在命令行添加，这非常方便：
+例如：
+#:sudo ufw allow from 你的IP to any port 22         //如果你要设置第一条规则（你应该），
+                                                      要确保你有个固定 IP（企业光纤）或安全的 VPN，
+                                                      动态 IP 会在某天把你锁到服务器外面
+#:sudo ufw allow from 192.168.1.1   //允许此IP访问所有的本机端口,同样要确保你有企业光纤或VPN等固定ip
+#:sudo ufw allow 80            //添加允许外部访问80端口
+#:sudo ufw allow 443           //添加允许外部访问443端口
+#:sudo ufw disable             //关闭ufw防火墙
+#:sudo ufw enable              //启用ufw防火墙
+#:sudo ufw status              //查看防火墙状态
+#:sudo ufw default deny        //默认拒绝
+
+===================================================================================================================
+其他常用命令：
+#:sudo ufw deny smtp       //禁止外部访问smtp服务，简易邮件传输协议
+#:sudo ufw delete allow smtp      //删除上面建立的某条规则
+#:sudo ufw deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 22 要拒绝所有的TCP流量从10.0.0.0/8 到192.168.0.1地址的22端口
+#:ufw logging LEVEL     //设置日志级别'off', 'low', 'medium', 'high' and 'full'
+
+
+可以允许所有RFC1918网络（局域网/无线局域网的）访问这个主机（/8,/16,/12是一种网络分级）：
+#:sudo ufw allow from 10.0.0.0/8
+#:sudo ufw allow from 172.16.0.0/12
+#:sudo ufw allow from 192.168.0.0/16
+*第一个命令是个冗余措施，保证只有从我们的 IP 才能连接 ssh标准端口，第二个和第三个用来打开 http 和 https 。
+===================================================================================================================
+
+5.自动应用安全更新
+安全更新并不完美，但及时安装补丁还是更好些。
+#:sudo apt-get install unattended-upgrades
+#:sudo dpkg-reconfigure -plow unattended-upgrades
+执行后进入交互界面，选择Yes->OK就可以了。
+
+  配置更新内容
+  默认情况下只安装安全相关的更新，不过你也可以根据你的需要修改下面路径文件，以决定要自动安装哪些更新：
+  #:nano /etc/apt/apt.conf.d/50unattended-upgrades
+  
+  ================================================================
+  Unattended-Upgrade::Allowed-Origins {
+         "${distro_id}:${distro_codename}";
+         "${distro_id}:${distro_codename}-security";
+  //      "${distro_id}:${distro_codename}-updates";
+  //      "${distro_id}:${distro_codename}-proposed";
+  //      "${distro_id}:${distro_codename}-backports";
+  };
+  ================================================================
+  设置更新频率
+  默认情况下更新频率是一天一次，可以在/etc/apt/apt.conf.d/20auto-upgrades文件里修改这个设置，文件里的1表示一天，换成你想设置的天数即可。
+  
+  APT::Periodic::Update-Package-Lists "1";
+  APT::Periodic::Unattended-Upgrade "1";
+
+
+
+
+
+
+
+
+
+
+
+
+
