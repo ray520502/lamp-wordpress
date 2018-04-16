@@ -74,7 +74,72 @@ Ubuntu 上 ufw 是默认安装的，在 Debian 上只需要执行一下 sudo apt
   APT::Periodic::Update-Package-Lists "1";
   APT::Periodic::Unattended-Upgrade "1";
 
+到这里你已经准备就绪了。
 
+6.fail2ban
+Fail2ban 软件包主动拦阻可疑行为。根据官方 wiki（http://www.fail2ban.org/wiki/index.php/Main_Page），Fail2ban 扫描日志文件（比如：/var/log/apache/error_log ），通过在 iptables 添加规则来阻止那些有恶意迹象（多次密码错误，探寻漏洞等…）的 IP。
+
+Fail2Ban 自带多种协议过滤器（HTTPS, STMP, SSH等），它还与 Apache 、Nginx等众多服务集成，提供一定程度的 DDoS 或暴力破解防护。不过使用的时候要小心，因为封堵 DDoS 攻击的源地址，可能也会阻止正常用户一段时间。它带有大量的配置选项，包括集成SendMail，当某个 IP 被封堵时发出邮件通知。你尽可以点击上述这些链接，看看哪些选项对你的胃口。
+
+执行安装：
+#:apt-get install fail2ban
+
+配置文件在/etc/fail2ban/fail2ban.conf
+可搜索email修改被攻击时接收通知email地址。
+#：sudo nano /etc/fail2ban/fail2ban.conf
+  如下修改
+  destemail = 25243888@qq.com     //25243888@qq.com 你的email地址
+
+=================================================================================================================
+
+常用指令：
+#：fail2ban-client status         //查看 Fail2Ban 的執行狀態
+#：fail2ban-client status ssh-iptables          //查看 Fail2Ban 查看設定檔的執行狀態
+#：iptables -n -L INPUT | grep fail2ban         //查看防火牆的設定
+#：iptables --list                              //從防火牆查看有哪些 IP 被封鎖
+#：service fail2ban restart                     //重启防火墙
+
+=================================================================================================================
+
+
+7.双重认证
+构建任何敏感系统时，双重认证(2 Factor Authentication, 2FA)不是额外的要求，而是必须的。
+理论上，如果你强制启用 2FA (加上以上所有措施），那么为了登录你的服务器（应用程序漏洞除外），
+攻击者必须：
+ 1.获得你的证书来登录VPN
+ 2.获得你的电脑、拿到你的私钥
+ 3.获得你私钥的密码短语
+ 4.获得你的电话以遍完成双重认证
+ 
+这就需要跨越不少的障碍了，即使都得手了，攻击者还是需要 deploy 用户的密码才能通过 sudo 获得 root 权限，而密码可是用 AES 加密保存的。
+
+安装这个软件包：
+#：apt-get install libpam-google-authenticator
+
+运行这个命令来设置，根据提示配置：
+#：su deploy
+#：google-authenticator
+
+2FA非常简单，而且增加了很强的一层安全性。
+
+8.Logwatch检测安装
+这不仅仅是个简单的小快乐和监控工具，用来事后查看服务器发生了什么。Logwatch 监控你的日志文件，经过配置后，
+它可以每天发送格式精美的报告邮件。邮件内容看起来非常有喜感，你会惊讶每天有那么多要进入你服务器的企图。
+我装这个软件包没有别的原因，就是给团队显示一下好的安全性配置有多么重要。
+
+DigitalOcean 有一篇关于 logwatch 安装配置的详细文档（https://www.digitalocean.com/community/tutorials/
+how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps），但是如果时间限制在 10 分钟以内，
+我们只会完成安装，然后配置 cron 计划任务来每天发送邮件。
+
+安装：
+#：sudo apt-get install logwatch
+添加 cron 计划任务
+#：sudo nano /etc/cron.daily/00logwatch
+把这一行加进去：
+/usr/sbin/logwatch --output mail --mailto you@example.com --detail high     //you@example.com为你的email
+
+
+完工！
 
 
 
