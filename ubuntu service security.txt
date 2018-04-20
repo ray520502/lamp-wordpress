@@ -138,9 +138,21 @@ how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps），但是�
 把这一行加进去：
 /usr/sbin/logwatch --output mail --mailto you@example.com --detail high     //you@example.com为你的email
 
-
-完工！
-
+安装后的目录文件说明：
+/usr/share/logwatch
+    default.conf/     # 配置目录
+        logwatch.conf   # 主配置文件，收件人，级别等
+        logfiles/       # 定义待分析服务的日志文件组路径，相对于/var/log(*.conf)
+        services/       # 自定义需分析日志的Service目录(*.conf)
+    scripts/          # 可执行脚本
+        logwatch.pl     # 启动分析的perl脚本，/usr/sbin/logwatch的源链接
+        logfiles/       # 可包含多个logwatch日志文件组的子目录，对应的日志服务运行的时候，子目录下的脚本会自动被调用
+        services/       # logwatch日志服务的过滤脚本，一一对应
+        shared/         # 可被多个logwatch日志服务引用的脚本
+    dist.conf/
+        logfiles/
+        services/
+    lib/
 
 
 
