@@ -166,7 +166,8 @@ logwatch --mailto 25243818@abc.com  //you email address
 
 
 
-
+*安装mc工具可以快速用鼠标点击打开文件夹编辑文档等各种操作
+#：sudo apt-get install mc -y
 
 
 
