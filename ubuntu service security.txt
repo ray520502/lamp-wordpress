@@ -132,12 +132,21 @@ DigitalOcean 有一篇关于 logwatch 安装配置的详细文档（https://www.
 how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps），但是如果时间限制在 10 分钟以内，
 我们只会完成安装，然后配置 cron 计划任务来每天发送邮件。
 
-安装：
+1.安装：
 #：sudo apt-get install logwatch
-添加 cron 计划任务
-#：sudo nano /etc/cron.daily/00logwatch
-把这一行加进去：
-/usr/sbin/logwatch --output mail --mailto you@example.com --detail high     //you@example.com为你的email
+
+2.配置Logwatch：
+#：nano /usr/share/logwatch/default.conf/logwatch.conf
+
+ 按照一下修改
+ MailTo = root 改为 MailTo = 25243818@abc.com
+ mailer = "sendmail -t"
+ Detail = High
+ Output = html
+ Service = All
+
+3.测试：
+logwatch --mailto 25243818@abc.com  //you email address
 
 安装后的目录文件说明：
 /usr/share/logwatch
