@@ -1,0 +1,58 @@
+因为项目需要一个邮件服务器功能，用已有的企业邮箱又有各种限制，就来捣鼓了下和这个相关的一些东西。
+一般是有好几个选择，比如Postfix，sendmail，qmail，第一个我之前用过，但是项目需求只有发邮件，
+也不知怎的就选择了sendmail，事实证明还是不要作，废话不说，结合自己的一些经验总结一下，
+希望能让大家少踩坑。
+
+一、安装
+
+必装：
+
+sudo apt-get install sendmail  
+sudo apt-get install sendmail-cf  
+sudo apt-get install mailutils
+可选：
+
+squirrelmail              //提供webmail          
+spamassassin          //提供邮件过滤  
+mailman                   //提供邮件列表支持  
+dovecot                   // 提供IMAP和POP接收邮件服务器守护进程
+sharutils                  // 提供带附件的功能
+
+终端输入命令：ps aux |grep sendmail
+输出如下：
+
+root     20978  0.0  0.3   8300  1940 ?        Ss   06:34   0:00 sendmail: MTA: accepting connections          
+root     21711  0.0  0.1   3008   776 pts/0    S+   06:51   0:00 grep sendmail 
+
+说明sendmail 已经安装成功并启动了
+
+二、配置
+
+（1）sudo nano /etc/mail/sendmail.mc
+（a）配置sendmail可以连接任何服务器
+
+DAEMON_OPTIONS(`Family=inet,  Name=MTA-v4, Port=smtp, Addr=127.0.0.1')dnl         修改Addr=0.0.0.0
+
+（2）生成新的配置文件：
+
+代码 
+#cd /etc/mail  
+#mv sendmail.cf sendmail.cf.backup     //做一个备份  
+#m4 sendmail.mc > sendmail.cf   //>的左右有空格，提示错误没有安装sendmail-cf  
+
+三、测试发送邮件
+
+常用发送邮件方式如下：
+
+    1.如何写一般的邮件： mail test@126.com  Cc 编辑抄送对象，
+    Subject:邮件主题,输入回车，邮件正文后，按Ctrl-D结束   //test@126.com 为发送对象，ctrl-D后系统反应比较慢需要等待一会
+    
+
+    2.快速发送方式： echo “邮件正文” | mail -s 邮件主题 test@126.com
+
+    3.以文件内容作为邮件正文来发送： mail -s test test@126.com < test.txt
+
+    4.发送带附件的邮件： uuencode 附件名称 附件显示名称 | mail -s 邮件主题 发送地址
+
+       例如： uuencode test.txt test.txt | mail -s Test test@126.com
+
