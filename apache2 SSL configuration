@@ -1,0 +1,33 @@
+在Ubuntu 13.10 下安装支持SSL的Apache
+
+安装apache运行如下命令：
+#：sudo apt-get install apache2 apache2-doc apache2-utils
+
+apache测试页面：
+打开浏览器,转到http://你的测试机的IP地址/。你应该会看到类似以下的信息。
+
+创建目录：
+创建一个名为ssl的目录
+#：sudo mkdir /etc/apache2/ssl
+
+创建一个自签名凭证
+#：sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt
+
+开启Apache SSL模块
+运行以下命令开启ssl模块
+#：a2enmod ssl
+
+编辑 /etc/apache2/sites-enabled/000-default.conf 文件：
+#：sudo nano /etc/apache2/sites-enabled/000-default.conf
+
+启用Apache缺省的SSL虚拟主机:
+#：a2ensite default-ssl
+
+重启Apache:
+#：sudo service apache2 restart
+
+
+
+
+
+
