@@ -1,3 +1,4 @@
+自建证书方法：
 在Ubuntu 13.10 下安装支持SSL的Apache
 
 安装apache运行如下命令：
@@ -17,8 +18,35 @@ apache测试页面：
 运行以下命令开启ssl模块
 #：a2enmod ssl
 
-编辑 /etc/apache2/sites-enabled/000-default.conf 文件：
-#：sudo nano /etc/apache2/sites-enabled/000-default.conf
+编辑 /etc/apache2/sites-enabled/default-ssl.conf 文件：
+#：sudo nano /etc/apache2/sites-enabled/default-ssl.conf
+
+加入以下规则：
+================================================================
+  ServerAdmin webmaster@localhost
+  ServerName www.unixmen.com:443
+
+  SSLEngine on
+  SSLCertificateFile /etc/apache2/ssl/apache.crt
+  SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+================================================================
+
+配置 HTTPS 强制跳转：
+打开 /etc/apache2/sites-available/000-default.conf，
+在<VirtualHost *:80></VirtualHost>标签内随便一个地方加入以下三行
+
+================================================================
+  RewriteEngine on
+  RewriteCond  %{HTTPS} !=on
+  RewriteRule  ^(.*) https://%{SERVER_NAME}$1 [L,R]
+================================================================
+
+使配置生效
+启动 rewrite mod
+#：sudo a2enmod rewrite
+重启 apache
+#：service apache2 restart
+
 
 启用Apache缺省的SSL虚拟主机:
 #：a2ensite default-ssl
