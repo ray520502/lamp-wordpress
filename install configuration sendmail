@@ -56,3 +56,5 @@ DAEMON_OPTIONS(`Family=inet,  Name=MTA-v4, Port=smtp, Addr=127.0.0.1')dnl       
 
        例如： uuencode test.txt test.txt | mail -s Test test@126.com
 
+
+*需要保留端口25
