@@ -33,9 +33,10 @@ apache测试页面：
 
 配置 HTTPS 强制跳转：
 打开 /etc/apache2/sites-available/000-default.conf，
-在<VirtualHost *:80></VirtualHost>标签内随便一个地方加入以下三行
+在<VirtualHost *:80></VirtualHost>标签内随便一个地方加入以下三行并修改端口<VirtualHost *:443>
 
 ================================================================
+  LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
   RewriteEngine on
   RewriteCond  %{HTTPS} !=on
   RewriteRule  ^(.*) https://%{SERVER_NAME}$1 [L,R]
@@ -54,7 +55,7 @@ apache测试页面：
 重启Apache:
 #：sudo service apache2 restart
 
-
+安装证书方法：
 
 
 
