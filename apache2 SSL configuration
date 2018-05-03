@@ -57,6 +57,34 @@ apache测试页面：
 
 安装证书方法：
 
+安装证书
+文件说明：
+1. 证书文件214621169840037.pem，包含两段内容，请不要删除任何一段内容。
+
+2. 如果是证书系统创建的CSR，还包含：证书私钥文件214621169840037.key、证书公钥文件public.pem、证书链文件chain.pem。
+( 1 ) 在Apache的安装目录下创建cert目录，并且将下载的全部文件拷贝到cert目录中。如果申请证书时是自己创建的CSR文件，
+请将对应的私钥文件放到cert目录下并且命名为214621169840037.key；
+( 2 ) 打开 apache 安装目录下 conf 目录中的 httpd.conf 文件，找到以下内容并去掉“#”：
+#LoadModule ssl_module modules/mod_ssl.so (如果找不到请确认是否编译过 openssl 插件)
+#Include conf/extra/httpd-ssl.conf
+
+( 3 ) 打开 apache 安装目录下 conf/extra/httpd-ssl.conf 文件 (也可能是conf.d/ssl.conf，与操作系统及安装方式有关)， 在配置文件中查找以下配置语句:
+# 添加 SSL 协议支持协议，去掉不安全的协议
+SSLProtocol all -SSLv2 -SSLv3
+# 修改加密套件如下
+SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM
+SSLHonorCipherOrder on
+# 证书公钥配置
+SSLCertificateFile cert/public.pem
+# 证书私钥配置
+SSLCertificateKeyFile cert/214621169840037.key
+# 证书链配置，如果该属性开头有 '#'字符，请删除掉
+SSLCertificateChainFile cert/chain.pem
+
+( 4 ) 重启 Apache。
+
+( 5 ) 通过 https 方式访问您的站点,测试站点证书的安装配置，如遇到证书不信任问题，请查看帮助视频。
+
 
 
 
