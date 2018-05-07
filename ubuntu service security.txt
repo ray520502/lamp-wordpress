@@ -27,7 +27,8 @@ Ubuntu 上 ufw 是默认安装的，在 Debian 上只需要执行一下 sudo apt
                                                       要确保你有个固定 IP（企业光纤）或安全的 VPN，
                                                       动态 IP 会在某天把你锁到服务器外面
 #:sudo ufw allow from 192.168.1.1   //允许此IP访问所有的本机端口,同样要确保你有企业光纤或VPN等固定ip
-#:sudo ufw allow 80            //添加允许外部访问80端口
+#:sudo ufw allow 80            //添加允许外部访问80端口，wordpress默认端口
+#:sudo ufw allow 25            //添加允许外部访问25端口，sendmail默认端口
 #:sudo ufw allow 443           //添加允许外部访问443端口
 #:sudo ufw disable             //关闭ufw防火墙
 #:sudo ufw enable              //启用ufw防火墙
