@@ -143,7 +143,7 @@ how-to-install-and-use-logwatch-log-analyzer-and-reporter-on-a-vps），但是�
  MailTo = root 改为 MailTo = 25243818@abc.com
  mailer = "sendmail -t"
  Detail = High
- Output = html
+ Format = html
  Service = All
 
 3.测试：
