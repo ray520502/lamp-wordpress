@@ -249,16 +249,61 @@ apt-get install libapache2-mod-evasive
 
 如果某个 IP 地址超过了这些阈值，则被加入黑名单 10 秒钟。
 
-这看起来可能不算久，但是，mod_evasive 将一直监视页面请求，包括在黑名单中的 IP 地址，并重置其加入黑名单的起始时间。只要一个 IP 地址一直尝试使用 DOS 攻击该网站，它将始终在黑名单中。
+这看起来可能不算久，但是，mod_evasive 将一直监视页面请求，包括在黑名单中的 IP 地址，并重置其加入黑名单的起始时间。只要一个 IP 
+地址一直尝试使用 DOS 攻击该网站，它将始终在黑名单中。
 
-必须要创建日志目录并且要赋予其与 apache 进程相同的所有者。这里创建的目录是 /var/log/mod_evasive ，
+2.必须要创建日志目录并且要赋予其与 apache 进程相同的所有者。这里创建的目录是 /var/log/mod_evasive ，
 并且在 Ubuntu 上将该目录的所有者和组设置为 www-data ，与 Apache 服务器相同：
 $ sudo mkdir /var/log/mod_evasive          //建立一个文件夹,存放临时文件，需要自己清理
 $ sudo chown www-data:www-data /var/log/mod_evasive
 
+3.在编辑了 Apache 的配置之后，特别是在正在运行的网站上，在重新启动或重新加载之前，最好检查一下语法，因为语法错误将影响 Apache
+的启动从而使网站宕机。Apache 包含一个辅助命令，是一个配置语法检查器。只需运行以下命令来检查您的语法：
+
+$sudo apachectl configtest
+
+如果您的配置是正确的，会得到如下结果：Syntax OK
+
+但是，如果出现问题，您会被告知在哪部分发生了什么错误，例如：
+=========================================================
+AH00526: Syntax error on line 6 of /etc/apache2/mods-enabled/evasive.conf:
+    DOSSiteInterval takes one argument, Set site interval
+    Action 'configtest' failed.
+    The Apache error log may have more information.
+=========================================================
+
+如果您的配置通过了 configtest 的测试，那么这个模块可以安全地被启用并且 Apache 可以重新加载：
+ $ a2enmod evasive
+ $ systemctl reload apache2.service
+ 
+4.测试
+为了测试 mod_evasive，我们只需要向服务器提出足够的网页访问请求，以使其超出阈值，并记录来自 Apache 的响应代码。
+一个正常并成功的页面请求将收到如下响应：    HTTP/1.1 200 OK
+但是，被 mod_evasive 拒绝的将返回以下内容：    HTTP/1.1 403 Forbidden
 
 
+以下脚本会尽可能迅速地向本地主机（127.0.0.1，localhost）的 80 端口发送 HTTP 请求，并打印出每个请求的响应代码。
+你所要做的就是把下面的 bash 脚本复制到一个文件中，例如 mod_evasive_test.sh：
 
+$sudo touch mod_evasive_test.sh
+$sudo nano mod_evasive_test.sh
+复制横线内的脚本到mod_evasive_test.sh并保存：
+--------------------------不包括横线----------------------------
+#!/bin/bash
+    set -e
+    for i in {1..50}; do
+            curl -s -I 127.0.0.1 | head -n 1
+    done
+--------------------------不包括横线----------------------------
+
+$sudo chmod 755 mod_evasive_test.sh
+$sudo apt-get install curl -y
+$./mod_evasive_test.sh                //执行脚本
+
+在启用 mod_evasive 之前，脚本运行时，将会看到 50 行 “HTTP / 1.1 200 OK” 的返回值。
+但是，启用 mod_evasive 后，您将看到以下内容：HTTP/1.1 403 Forbidden
+
+原教程连接：http://www.linux-ren.org/tech/2388.html
 
 
 8.重定向404页面
