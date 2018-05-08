@@ -1,0 +1,19 @@
+最简单的方法，将/目录下的所有文件打成一个压缩包，需要的是后再解压后覆盖回去。
+
+首先确保是root用户。
+$sudo -s
+
+然后运行命令将/目录下的文件打包
+$cd /
+
+这行以下命令：
+$tar cvpzf backup.tgz --exclude=/proc --exclude=/lost+found --exclude=/backup.tgz --exclude=/mnt --exclude=/sys /
+
+
+cvpzf 具体可以参考tar命令的帮助，这里解释一下:
+cf 用来创建tar文件(f指的是存档文件，通常用于cf或者zf)， z指的是gzip压缩，v是verbose，详细列出创建过程, p代表保持文件的权限不变。
+好了，我的备份文件backup.tgz创建好了，652M。
+
+
+以后遇到问题，就可通过下面的命令还原回去。
+$tar xvpfz backup.tgz -C /
