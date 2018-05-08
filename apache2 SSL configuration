@@ -84,7 +84,7 @@ public.pem
                 SSLCertificateKeyFile /etc/apache2/cert/214621169840037.key
                 SSLCertificateChainFile /etc/apache2/cert/chain.pem
 
-ps：自行 一 一 对应。
+ps：自行 一 一 对应，留意网站根目录位置！！
 
 第五步、非常关键的一步
 // 加载Apache的SSL模块
