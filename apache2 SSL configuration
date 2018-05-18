@@ -103,10 +103,13 @@ RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
 1.需要加载rewrite.load模块：
 *mods-enabled中加上指向 mods-available文件夹下的rewrite.load文件的软链接。  //一般没需要
 
+#：sudo ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+
+
 2.然后配置 /etc/apache2/apache2.conf 文件 , 修改 None 为 All
 #：sudo nano /etc/apache2/apache2.conf
 
-<Directory /var/www/>                     //网站根目录路径
+<Directory /var/www/>                    
         Options Indexes FollowSymLinks
         AllowOverride ALL
         Require all granted
