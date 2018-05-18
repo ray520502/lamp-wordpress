@@ -24,7 +24,7 @@ step4: install PhpmyAdmin  //install Selected
 	root$:sudo apt-get install php-gettext
 
 	step4-2:build a soft link
-	root$:sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+	root$:sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin          #软连接的最终位置可以设置在html/wordpress/phpmyadmin
 	
 	step4-3:Change two options in php.ini
 	root$:sudo nano /etc/php/7.0/apache2/php.ini     
