@@ -74,7 +74,7 @@ public.pem
         <VirtualHost *:443>
                 ServerAdmin webmaster@localhost
                 ServerName www.maloc.cn
-                DocumentRoot /var/www/html
+                DocumentRoot /var/www/html             #添加网站最终根目录，与000-default 一样需要添加
                 
                 ErrorLog ${APACHE_LOG_DIR}/error.log
                 CustomLog ${APACHE_LOG_DIR}/access.log combined
