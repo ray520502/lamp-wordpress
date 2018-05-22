@@ -93,11 +93,18 @@ ps：自行 一 一 对应，留意网站根目录位置！！
 #:sudo /etc/init.d/apache2 restart     // 这时浏览器应该就可访问了
 
 补充：强制https访问
-在网站根目录下新建文件 .htaccess 文件，写入内容:
+在网站根目录下新建文件 .htaccess 文件，
+
+#:touch /var/www/html/.htaccess
+
+写入内容:
 RewriteEngine on
 RewriteBase / 
 RewriteCond %{SERVER_PORT} !^443$
 RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [L,R]  
+
+软连接到网站根目录：（例：wordpress/）
+#:ln -s /var/www/html/.htaccess /var/www/html/wordpress/.htaccess
 
 如果 .htaccess 文件没有生效：
 1.需要加载rewrite.load模块：
