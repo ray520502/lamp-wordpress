@@ -7,7 +7,7 @@
 # sudo nano /etc/apache2/apache2.conf (Debian/Ubuntu)
 
 直接在配置文件最下方写入以下两项即可（此方法适合apache2.4使用）：
-SServerSignature Off
+ServerSignature Off
 ServerTokens Prod
 
 # service apache2 restart (Debian/Ubuntu) //重启apache
