@@ -11,7 +11,7 @@ step2: install php and plus
 	root$:sudo apt-get update
 
 	step2-2: install php7.0 and plus
-	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json
+	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json php7.0-gd
 
 step3: install mysql-server
 	root$:sudo apt-get install mysql-server
