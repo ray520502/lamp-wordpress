@@ -310,5 +310,30 @@ $./mod_evasive_test.sh                //执行脚本
 
 
 
+知识补充：
+A.apache2模块启动、禁用命令：
+1.在Apache2中启用模块：
+$   sudo a2enmod rewrite
+
+2. 在Apache2中禁用模块:
+$   sudo a2dismod rewrite
+
+3. 重新加载Apache2配置
+$   sudo service apache2 reload
+
+4.查看apache2已加载模块：
+$   apache2ctl -M
+
+5.apache2命令帮助：
+$   apache2ctl -h
+
+
+
+
+
+
+
+
+
 
  
