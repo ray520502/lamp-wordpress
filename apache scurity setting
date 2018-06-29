@@ -144,7 +144,7 @@ apache2 8890 http-web    4u  IPv6 101481      0t0  TCP *:http (LISTEN)
 查询加载模块命令 #:apachectl -t -D DUMP_MODULES
 
 第一步：
-安装mod_security/mod_evasive，以及其他以来包
+安装mod_security/mod_evasive，以及其他以来包   --------------------------有403错误，会禁止phpmyadmin、login页面，默认非法页面
 #：sudo apt-get install -y libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev libapache2-modsecurity libapache2-mod-evasive
 
 ==============================================================================
