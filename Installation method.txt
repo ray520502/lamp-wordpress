@@ -11,8 +11,10 @@ step2: install php and plus
 	root$:sudo apt-get update
 
 	step2-2: install php7.0 and plus
-	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json php7.0-gd
-
+	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json php7.0-gd php7.0-dom php7.0-soap
+	
+	*php7.0-soap php7.0-dom是wocommerce部分功能需要使用插件，可以输入php -v 查询当前PHP版本，选择相应插件版本。
+	
 step3: install mysql-server
 	root$:sudo apt-get install mysql-server
 	root$:sudo apt-get install mysql-client
