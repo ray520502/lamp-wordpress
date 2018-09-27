@@ -38,7 +38,22 @@ DAEMON_OPTIONS(`Family=inet,  Name=MTA-v4, Port=smtp, Addr=127.0.0.1')dnl       
 代码 
 #cd /etc/mail  
 #mv sendmail.cf sendmail.cf.backup     //做一个备份  
-#m4 sendmail.mc > sendmail.cf   //>的左右有空格，提示错误没有安装sendmail-cf  
+#m4 sendmail.mc > sendmail.cf   //>的左右有空格，提示错误没有安装sendmail-cf
+
+三、添加本地主机名与ip到hosts（加快sendmail的工作效率，原因发送邮件或启动服务时sendmail会查找hostname的地址，增加运行时间）
+
+1.查看主机名（可不操作）
+# hostname
+
+2.ping主机名（可不操作）
+# ping `hostname`
+*可能ping不通，或者缓慢
+
+3.把主机名添加到hosts，执行以下命令：
+# echo 127.0.0.1 `hostname` >> /etc/hosts
+
+4.再ping一次（可不操作）
+执行2的命令，查看ping出来的结果
 
 三、测试发送邮件
 
