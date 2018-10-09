@@ -7,9 +7,9 @@
 
 必装：
 
-sudo apt-get install sendmail  
+sudo apt-get install sendmail -y
 sudo apt-get install sendmail-cf  
-sudo apt-get install mailutils
+sudo apt-get install mailutils -y
 可选：
 
 squirrelmail              //提供webmail          
