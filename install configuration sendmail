@@ -13,10 +13,10 @@ sudo apt-get install mailutils -y
 可选：
 
 squirrelmail              //提供webmail          
-spamassassin          //提供邮件过滤  
+spamassassin              //提供邮件过滤  
 mailman                   //提供邮件列表支持  
 dovecot                   // 提供IMAP和POP接收邮件服务器守护进程
-sharutils                  // 提供带附件的功能
+sharutils                 // 提供带附件的功能
 
 终端输入命令：ps aux |grep sendmail
 输出如下：
