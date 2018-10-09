@@ -95,6 +95,8 @@ ps：自行 一 一 对应，留意网站根目录位置！！
 补充：强制https访问
 在网站根目录下新建文件 .htaccess 文件，
 
+
+================================================================================wordpress可以忽略此步骤
 #:touch /var/www/html/.htaccess
 
 写入内容:
@@ -102,6 +104,9 @@ RewriteEngine on
 RewriteBase / 
 RewriteCond %{SERVER_PORT} !^443$
 RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [L,R]  
+================================================================================wordpress于setting-->Permalink永久连接设置，选择一种方式
+
+
 
 软连接到网站根目录：（例：wordpress/）
 #:ln -s /var/www/html/.htaccess /var/www/html/wordpress/.htaccess
