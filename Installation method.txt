@@ -1,27 +1,27 @@
 step1:install apache
 
-	root$: sudo apt-get install apache2
+	root$: sudo apt-get install apache2 -y
 
 
 step2: install php and plus
 
 	step2-1: add php software pack
-	root$:sudo apt-get install software-properties-common
+	root$:sudo apt-get install software-properties-common -y
 	root$:sudo add-apt-repository ppa:ondrej/php
 	root$:sudo apt-get update
 
 	step2-2: install php7.0 and plus
-	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json php7.0-gd php7.0-dom php7.0-soap
+	root$:sudo apt-get install libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json php7.0-gd php7.0-dom php7.0-soap -y
 	
 	*php7.0-soap php7.0-dom是wocommerce部分功能需要使用插件，可以输入php -v 查询当前PHP版本，选择相应插件版本。
 	
 step3: install mysql-server
-	root$:sudo apt-get install mysql-server
+	root$:sudo apt-get install mysql-server -y
 	root$:sudo apt-get install mysql-client
 	
 step4: install PhpmyAdmin  //install Selected
 	step4-1:install
-	root$:sudo apt-get install phpmyadmin
+	root$:sudo apt-get install phpmyadmin -y
 	root$:sudo apt-get install php7.0-mbstring   //you need check you php version     $:php --version
 	root$:sudo apt-get install php-gettext
 
