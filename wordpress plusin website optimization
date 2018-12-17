@@ -1,0 +1,43 @@
+WordPress做的网站一般都必须做下速度优化，以前一全老师也写过wp网站提速的文章：《三步走，0元搞定外贸网站速度优化》，向大家推荐了wp fastest cache和imagify，今天，一全老师再给大家介绍几款更好的wp速度优化插件。
+
+一、Wp Super Cache和Cache Enabler
+
+这两款都是缓存插件，其实跟wp fastest cache、w3 total cache 、wp rocket等等都差不多，都是为网站生成缓存，以此提升网站速度，但是wp rocket cache（功能强大）必须付费，w3 total cache（功能强大）插件太大，
+设置太复杂，所以这两个被排除。
+
+至于wp fastest cache，虽然是轻量级插件，设置也非常简单，但是缓存后速度提升效果一般，所以推荐新手使用，老手可以换掉了。
+
+所以最后推荐Wp super cache和cache enabler。（做的缓存插件测评中，这两个插件的评分也是相当高，测评文章地址：https://www.designbombs.com/top-wordpress-caching-plugins-compared/。）
+
+当然，新手用Wp Super cache，可能看不懂里面的设置，但是不要紧，这里有老外的详细教程：https://www.shoutmeloud.com/wp-super-cache-wordpress-optimization-plugin.html。
+
+至于cache enabler，使用也是非常简单，不懂的可以参考这篇文章：https://blog.tbwhs.com/cache-enabler/。
+
+二、Autoptimize插件
+
+这款插件主要用于压缩网站的html、css以及js代码，以此来提升网站的访问速度，使用方法非常简单，Hml、Js、Css三个选项后面打钩，然后保存就行了，如下图：
+<img src="https://www.yiquanseo.com/wp-content/uploads/2018/07/2018071209003027.png" >
+其实绝大部分缓存插件都自带代码压缩功能（上面提到的基本都带），所以这个插件现在用的越来越少了，当然，如果为了更好的效果，
+我们也可以关掉缓存插件自带的代码压缩功能，使用Autoptimize。
+
+三、Smush Image Compression and Optimization
+<img src="https://www.yiquanseo.com/wp-content/uploads/2018/07/2018071209003383.png">
+
+这是目前国外最有名的一款wp图片优化插件，主要用于压缩和优化图片，从而大大提升网站速度，以前一全老师给大家推荐过imagify，但是现在我更倾向Smush。
+因为这款插件我还没用过，所以没有教程，但是设置应该很简单，按照插件介绍来就行。
+
+四、WP-Optimize
+
+WP-Optimize是一款用来清理网站垃圾（垃圾箱里的评论、文章、产品、网页等，编辑网页积累的历史版本、陈旧数据，无用的数据库表），
+从而提升网站性能和运行速度。当然，他还有一些其他细小功能，比如定期清理、和UpdraftPlus结合发挥作用等等，使用也非常简单，最上方黑色的几项打钩，
+然后点击run all selected optimizations即可，如下图：
+<img src="https://www.yiquanseo.com/wp-content/uploads/2018/07/2018071209003562.png" >
+
+五、a3 Lazy Load
+
+这是一个lazy load插件，lazy load主要用于延时加载网页图片、视频、Js等严重影响速度的内容，以此提升网站打开和加载速度。
+
+a3 Lazy Load功能很多，效果很强，是目前lazy load插件中很不错的一款，强烈推荐。使用非常简单，激活之后，回到设置页面，所有选项默认，点击保存即可。
+
+当然，对于普通WordPress网站速度优化，最重要的还是服务器，服务器性能太差，基本什么都白搭，其次是选个轻量级速度快的wp theme，然后是缓存插件，再然后是图片压缩，
+当然，lazy load作用也比较大，剩下的gzip压缩必须搞下，其他的压缩html、css、js意义不大，至于cdn，一般网站其实用不到的。所以这些插件依次的重要性，大家应该心里有数了。
