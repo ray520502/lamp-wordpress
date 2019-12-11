@@ -97,4 +97,4 @@ step9:edit apache2 default file,change domain to root connect
 	
 	
 问题备注：
-1.wordpress修改连接为固定连接后报错出现403，可输入命令 chmod 666 .htaccess 修改开放/var/www/html/.htaccess文件读写权限，让wordpress修改重定向，即可解决问题。部分wordpress插件需要修改固定连接，但修改后报错也可用同样方式解决。
+1.wordpress修改连接为固定连接后报错出现403，可输入命令 chmod 666 .htaccess 修改开放/var/www/html/.htaccess文件读写权限，让wordpress修改重定向，即可解决问题。部分wordpress插件需要修改固定连接，但修改后报错也可用同样方式解决。（apache2要打开重写插件，百度）
